@@ -1,5 +1,5 @@
 import streamlit as st
-from braintrust import wrap_openai, init_logger, start_span
+from braintrust import wrap_openai, init_logger, start_span, load_prompt
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
@@ -7,6 +7,8 @@ from tools.retriever import get_documents, tool_definition
 import json
 
 load_dotenv()
+
+
 
 logger = init_logger(
     api_key=os.getenv("BRAINTRUST_API_KEY"), 
@@ -20,18 +22,60 @@ client = wrap_openai(
     )
 )
 
+prompt_object = load_prompt(project="StreamlitRAG", 
+                            slug="rag-prompt", 
+                            defaults={"tools": [tool_definition], "tool_choice": "auto", "stream": False},
+                            version= "c0e6c9abb3a0aa92" if os.getenv("BRAINTRUST_ENV") == "prod" else None
+                            )
+
+MODEL = prompt_object.build()["model"]
+TOOLS = prompt_object.build()["tools"]
+
+
+def format_messages_for_api(messages):
+    """Format messages for OpenAI API, handling tool calls properly."""
+    formatted_messages = []
+    
+    for msg in messages:
+        if msg["role"] == "assistant" and "tool_calls" in msg:
+            # Assistant message with tool calls
+            formatted_msg = {
+                "role": "assistant",
+                "content": msg["content"] if msg["content"] is not None else "",
+                "tool_calls": msg["tool_calls"]
+            }
+        elif msg["role"] == "tool":
+            # Tool response message
+            formatted_msg = {
+                "role": "tool",
+                "content": msg["content"],
+                "tool_call_id": msg["tool_call_id"]
+            }
+        else:
+            # Regular user or assistant message
+            formatted_msg = {
+                "role": msg["role"],
+                "content": msg["content"]
+            }
+        
+        formatted_messages.append(formatted_msg)
+    
+    return formatted_messages
+
 st.title("ChatGPT-like clone")
 
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-4o"
+    st.session_state["openai_model"] = MODEL
 
 if "messages" not in st.session_state:
-    st.session_state.messages = []
+    st.session_state.messages = [prompt_object.prompt.messages[0].as_dict()]
 
 # Display chat history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+        if message["role"] == "tool" or message["role"] == "system":
+            continue  # Don't display tool messages in the UI
+        st.markdown(message["content"] if message["content"] else "")
 
 # Handle new user input
 if prompt := st.chat_input("What is up?"):
@@ -44,13 +88,10 @@ if prompt := st.chat_input("What is up?"):
             with start_span("chat_completion", type="task"):
                 # First call: Get model response (might include tool calls)
                 response = client.chat.completions.create(
-                    model=st.session_state["openai_model"],
-                    messages=[
-                        {"role": m["role"], "content": m["content"]}
-                        for m in st.session_state.messages
-                    ],
-                    tools=[tool_definition],
+                    model=MODEL,
+                    messages=format_messages_for_api(st.session_state.messages),
                     tool_choice="auto",
+                    tools=TOOLS,
                     stream=False
                 )
 
@@ -61,7 +102,7 @@ if prompt := st.chat_input("What is up?"):
                     # Add the assistant's tool call message to conversation history
                     st.session_state.messages.append({
                         "role": "assistant",
-                        "content": msg.content,
+                        "content": msg.content,  # This might be None
                         "tool_calls": [{"id": tc.id, "type": tc.type, "function": {"name": tc.function.name, "arguments": tc.function.arguments}} for tc in msg.tool_calls]
                     })
                     
@@ -83,10 +124,7 @@ if prompt := st.chat_input("What is up?"):
                         # Get final response from model with tool results
                         final_response = client.chat.completions.create(
                             model=st.session_state["openai_model"],
-                            messages=[
-                                {"role": m["role"], "content": m["content"], **({k: v for k, v in m.items() if k not in ["role", "content"]})}
-                                for m in st.session_state.messages
-                            ],
+                            messages=format_messages_for_api(st.session_state.messages),
                             stream=False
                         )
                         

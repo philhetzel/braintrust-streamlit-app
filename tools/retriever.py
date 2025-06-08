@@ -44,13 +44,13 @@ tool_definition = {
     "type": "function",
     "function": {
         "name": "get_documents",
-        "description": "Retrieve and rerank documents from a Pinecone index based on a user query.",
+        "description": "Find information about Braintrust, an LLM evaluation and observability platform",
         "parameters": {
             "type": "object",
             "properties": {
                 "query": {
                     "type": "string",
-                    "description": "Search query to find relevant documents"
+                    "description": "The user's message"
                 }
             },
             "required": ["query"]
@@ -65,3 +65,13 @@ braintrust_tool = project.tools.create(name="Get Documents",
                                        returns=DocumentOutput,
                                        slug = 'get-documents-streamlit',
                                        if_exists='replace')
+
+project.prompts.create(name="rag-prompt",
+                        description="A prompt for a RAG bot",
+                        #prompt="You are a helpful assistant that can answer questions about the documents provided. You can use the get_documents tool to retrieve documents.",
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant that works for Braintrust, a start up that has built an LLM evaluations and observability platform.  that can answer questions about the documents provided. Please help answer questions about Braintrust and the platform. You can use the get_documents tool to retrieve information from the Braintrust docs."}
+                        ],
+                        model = "gpt-4o",
+                        tools=[braintrust_tool],
+                        if_exists='replace')
