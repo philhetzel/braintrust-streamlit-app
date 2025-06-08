@@ -8,8 +8,6 @@ import json
 
 load_dotenv()
 
-
-
 logger = init_logger(
     api_key=os.getenv("BRAINTRUST_API_KEY"), 
     project="StreamlitRAG"
@@ -62,7 +60,7 @@ def format_messages_for_api(messages):
     
     return formatted_messages
 
-st.title("ChatGPT-like clone")
+st.title("Braintrust Docs Assistant")
 
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = MODEL
@@ -72,9 +70,9 @@ if "messages" not in st.session_state:
 
 # Display chat history
 for message in st.session_state.messages:
+    if message["role"] in ["system", "tool"]:
+        continue  # Don't display system or tool messages in the UI
     with st.chat_message(message["role"]):
-        if message["role"] == "tool" or message["role"] == "system":
-            continue  # Don't display tool messages in the UI
         st.markdown(message["content"] if message["content"] else "")
 
 # Handle new user input
