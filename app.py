@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 from tools.retriever import get_documents, tool_definition
 import json
-
+from helpers.helpers import format_messages_for_api
 load_dotenv()
 
 logger = init_logger(
@@ -30,35 +30,7 @@ MODEL = prompt_object.build()["model"]
 TOOLS = prompt_object.build()["tools"]
 
 
-def format_messages_for_api(messages):
-    """Format messages for OpenAI API, handling tool calls properly."""
-    formatted_messages = []
-    
-    for msg in messages:
-        if msg["role"] == "assistant" and "tool_calls" in msg:
-            # Assistant message with tool calls
-            formatted_msg = {
-                "role": "assistant",
-                "content": msg["content"] if msg["content"] is not None else "",
-                "tool_calls": msg["tool_calls"]
-            }
-        elif msg["role"] == "tool":
-            # Tool response message
-            formatted_msg = {
-                "role": "tool",
-                "content": msg["content"],
-                "tool_call_id": msg["tool_call_id"]
-            }
-        else:
-            # Regular user or assistant message
-            formatted_msg = {
-                "role": msg["role"],
-                "content": msg["content"]
-            }
-        
-        formatted_messages.append(formatted_msg)
-    
-    return formatted_messages
+
 
 st.title("Braintrust Docs Assistant")
 
@@ -83,7 +55,7 @@ if prompt := st.chat_input("What is up?"):
 
     with st.chat_message("assistant"):
         try:
-            with start_span("chat_completion", type="task"):
+            with start_span("chat_completion", type="task") as span:
                 # First call: Get model response (might include tool calls)
                 response = client.chat.completions.create(
                     model=MODEL,
@@ -139,6 +111,13 @@ if prompt := st.chat_input("What is up?"):
                         "role": "assistant",
                         "content": msg.content
                     })
+                    final_content = msg.content = msg.content
+
+                span.log(
+                    input=st.session_state.messages,
+                    output=final_content,
+                    metadata={"model": MODEL}
+                )
                 
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
