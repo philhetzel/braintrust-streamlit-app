@@ -10,7 +10,7 @@ import random
 load_dotenv()
 
 CHAMPION_PROMPT = "e0a85a1f019f1a45" # e0a85a1f019f1a45 gpt 4.1 
-CHALLENGER_PROMPT = "80d80cf5801f16b2" or CHAMPION_PROMPT  # 80d80cf5801f16b2 gemini 2.5 flash
+CHALLENGER_PROMPT = "" or CHAMPION_PROMPT  # 80d80cf5801f16b2 gemini 2.5 flash
 
 def get_project():
     return projects.create(name=os.getenv("BRAINTRUST_PROJECT_NAME"))
