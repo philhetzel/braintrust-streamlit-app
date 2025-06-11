@@ -1,5 +1,6 @@
 from braintrust import projects
 from autoevals.llm import LLMClassifier
+from autoevals import ContextPrecision
 from helpers.helpers import get_project
 from pydantic import BaseModel
 

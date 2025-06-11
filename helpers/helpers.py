@@ -1,4 +1,4 @@
-from braintrust import wrap_openai, projects, load_prompt, start_span
+from braintrust import wrap_openai, projects, load_prompt, start_span, current_span
 from tools.retriever import tool_definition, get_documents
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -23,7 +23,6 @@ def get_model_attributes():
     return MODEL, TOOLS
 
 def chat(input): 
-    print(input)
 
     prompt_object = load_prompt(project="StreamlitRAG", 
                             slug="rag-prompt", 
@@ -40,7 +39,6 @@ def chat(input):
         base_url="https://api.braintrust.dev/v1/proxy",
     )
     )
-
 
     response = client.chat.completions.create(
         model=MODEL,
@@ -85,7 +83,10 @@ def chat(input):
             
             final_content = final_response.choices[0].message.content
             #st.markdown(final_content)
-            print(final_content)
+            current_span().log(
+                metadata={"model": MODEL,
+                          "context": docs_str}
+            )
             return final_content
     else:
         # No tool call, just display the response

@@ -1,4 +1,5 @@
 from braintrust import load_prompt, Eval, projects, wrap_openai, init_dataset, init_function
+from autoevals import Faithfulness
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
@@ -18,11 +19,14 @@ client = wrap_openai(
 PROJECT_NAME=os.getenv("BRAINTRUST_PROJECT_NAME")
 project = projects.create(name=PROJECT_NAME)
 
+def faithfulness(input, output, metadata):
+    return Faithfulness()(input=input, output=output, context=metadata["context"])
+
 Eval(
     name=PROJECT_NAME,
     task=chat,
-    data=init_dataset(project=PROJECT_NAME, name="chat-eval"),
-    scores=[forgetfulness],
+    data=init_dataset(project=PROJECT_NAME, name="QandAEvalCases"),
+    scores=[forgetfulness, faithfulness],
     max_concurrency=5
 )
 
