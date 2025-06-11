@@ -59,7 +59,7 @@ client = wrap_openai(
 prompt_object = load_prompt(project="StreamlitRAG", 
                             slug="rag-prompt", 
                             defaults={"tools": [tool_definition], "tool_choice": "auto", "stream": False},
-                            version= CHAMPION_PROMPT if random.random() < 1.0 else CHALLENGER_PROMPT
+                            version= CHAMPION_PROMPT if random.random() < 0.5 else CHALLENGER_PROMPT
                             )
 
 MODEL = prompt_object.build()["model"]
