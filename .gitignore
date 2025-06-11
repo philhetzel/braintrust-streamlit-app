@@ -13,4 +13,3 @@ wheels/
 #Environment Variables
 .env
 scratch.py
-requirements.txt

@@ -1,0 +1,277 @@
+aiohappyeyeballs==2.6.1
+    # via aiohttp
+aiohttp==3.12.11
+    # via voyageai
+aiolimiter==1.2.1
+    # via voyageai
+aiosignal==1.3.2
+    # via aiohttp
+altair==5.5.0
+    # via streamlit
+annotated-types==0.7.0
+    # via pydantic
+anthropic==0.52.2
+    # via braintrust-streamlit-app
+anyio==4.9.0
+    # via
+    #   anthropic
+    #   httpx
+    #   openai
+attrs==25.3.0
+    # via
+    #   aiohttp
+    #   jsonschema
+    #   referencing
+autoevals==0.0.129
+    # via braintrust-streamlit-app
+blinker==1.9.0
+    # via streamlit
+boto3==1.38.32
+    # via braintrust
+botocore==1.38.32
+    # via
+    #   boto3
+    #   s3transfer
+braintrust==0.1.3
+    # via braintrust-streamlit-app
+braintrust-core==0.0.59
+    # via autoevals
+cachetools==5.5.2
+    # via streamlit
+certifi==2025.4.26
+    # via
+    #   httpcore
+    #   httpx
+    #   pinecone
+    #   requests
+charset-normalizer==3.4.2
+    # via requests
+chevron==0.14.0
+    # via
+    #   autoevals
+    #   braintrust
+click==8.2.1
+    # via streamlit
+colorama==0.4.6 ; sys_platform == 'win32'
+    # via
+    #   click
+    #   tqdm
+distro==1.9.0
+    # via
+    #   anthropic
+    #   openai
+exceptiongroup==1.3.0
+    # via braintrust
+filelock==3.18.0
+    # via huggingface-hub
+frozenlist==1.6.2
+    # via
+    #   aiohttp
+    #   aiosignal
+fsspec==2025.5.1
+    # via huggingface-hub
+gitdb==4.0.12
+    # via gitpython
+gitpython==3.1.44
+    # via
+    #   braintrust
+    #   streamlit
+googleapis-common-protos==1.70.0
+    # via
+    #   pinecone
+    #   protoc-gen-openapiv2
+grpcio==1.72.1 ; python_full_version < '4.0'
+    # via pinecone
+h11==0.16.0
+    # via httpcore
+hf-xet==1.1.3 ; platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'arm64' or platform_machine == 'x86_64'
+    # via huggingface-hub
+httpcore==1.0.9
+    # via httpx
+httpx==0.28.1
+    # via
+    #   anthropic
+    #   openai
+huggingface-hub==0.32.4
+    # via tokenizers
+idna==3.10
+    # via
+    #   anyio
+    #   httpx
+    #   requests
+    #   yarl
+jinja2==3.1.6
+    # via
+    #   altair
+    #   pydeck
+jiter==0.10.0
+    # via
+    #   anthropic
+    #   openai
+jmespath==1.0.1
+    # via
+    #   boto3
+    #   botocore
+jsonschema==4.24.0
+    # via
+    #   altair
+    #   autoevals
+jsonschema-specifications==2025.4.1
+    # via jsonschema
+lz4==4.4.4
+    # via pinecone
+markupsafe==3.0.2
+    # via jinja2
+multidict==6.4.4
+    # via
+    #   aiohttp
+    #   yarl
+narwhals==1.41.1
+    # via altair
+numpy==2.3.0
+    # via
+    #   pandas
+    #   pydeck
+    #   streamlit
+    #   voyageai
+openai==1.84.0
+    # via braintrust-streamlit-app
+packaging==24.2
+    # via
+    #   altair
+    #   huggingface-hub
+    #   pinecone-plugin-assistant
+    #   streamlit
+pandas==2.3.0
+    # via streamlit
+pillow==11.2.1
+    # via
+    #   streamlit
+    #   voyageai
+pinecone==7.0.2
+    # via braintrust-streamlit-app
+pinecone-plugin-assistant==1.6.1
+    # via pinecone
+pinecone-plugin-interface==0.0.7
+    # via pinecone
+polyleven==0.9.0
+    # via autoevals
+propcache==0.3.1
+    # via
+    #   aiohttp
+    #   yarl
+protobuf==5.29.5
+    # via
+    #   googleapis-common-protos
+    #   pinecone
+    #   protoc-gen-openapiv2
+    #   streamlit
+protoc-gen-openapiv2==0.0.1
+    # via pinecone
+psycopg2-binary==2.9.10
+    # via braintrust
+pyarrow==20.0.0
+    # via streamlit
+pydantic==2.11.5
+    # via
+    #   anthropic
+    #   openai
+    #   voyageai
+pydantic-core==2.33.2
+    # via pydantic
+pydeck==0.9.1
+    # via streamlit
+python-dateutil==2.9.0.post0
+    # via
+    #   botocore
+    #   pandas
+    #   pinecone
+python-dotenv==1.1.0
+    # via braintrust
+python-slugify==8.0.4
+    # via braintrust
+pytz==2025.2
+    # via pandas
+pyyaml==6.0.2
+    # via
+    #   autoevals
+    #   huggingface-hub
+referencing==0.36.2
+    # via
+    #   jsonschema
+    #   jsonschema-specifications
+requests==2.32.3
+    # via
+    #   braintrust
+    #   huggingface-hub
+    #   pinecone-plugin-assistant
+    #   streamlit
+    #   voyageai
+rpds-py==0.25.1
+    # via
+    #   jsonschema
+    #   referencing
+s3transfer==0.13.0
+    # via boto3
+six==1.17.0
+    # via python-dateutil
+smmap==5.0.2
+    # via gitdb
+sniffio==1.3.1
+    # via
+    #   anthropic
+    #   anyio
+    #   openai
+sseclient-py==1.8.0
+    # via braintrust
+streamlit==1.45.1
+    # via braintrust-streamlit-app
+tenacity==9.1.2
+    # via
+    #   streamlit
+    #   voyageai
+text-unidecode==1.3
+    # via python-slugify
+tokenizers==0.21.1
+    # via voyageai
+toml==0.10.2
+    # via streamlit
+tornado==6.5.1
+    # via streamlit
+tqdm==4.67.1
+    # via
+    #   braintrust
+    #   huggingface-hub
+    #   openai
+typing-extensions==4.14.0
+    # via
+    #   altair
+    #   anthropic
+    #   anyio
+    #   braintrust
+    #   exceptiongroup
+    #   huggingface-hub
+    #   openai
+    #   pinecone
+    #   pydantic
+    #   pydantic-core
+    #   referencing
+    #   streamlit
+    #   typing-inspection
+typing-inspection==0.4.1
+    # via pydantic
+tzdata==2025.2
+    # via pandas
+urllib3==2.4.0
+    # via
+    #   botocore
+    #   pinecone
+    #   requests
+uv==0.7.12
+    # via braintrust
+voyageai==0.3.2
+    # via braintrust-streamlit-app
+watchdog==6.0.0 ; sys_platform != 'darwin'
+    # via streamlit
+yarl==1.20.0
+    # via aiohttp

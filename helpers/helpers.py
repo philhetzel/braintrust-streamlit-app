@@ -10,7 +10,7 @@ import random
 load_dotenv()
 
 CHAMPION_PROMPT = "e0a85a1f019f1a45" # e0a85a1f019f1a45 gpt 4.1 
-CHALLENGER_PROMPT = "" or CHAMPION_PROMPT  # 80d80cf5801f16b2 gemini 2.5 flash
+CHALLENGER_PROMPT = "80d80cf5801f16b2" or CHAMPION_PROMPT  # 80d80cf5801f16b2 gemini 2.5 flash
 
 def get_project():
     return projects.create(name=os.getenv("BRAINTRUST_PROJECT_NAME"))
@@ -31,7 +31,7 @@ def chat(input):
     prompt_object = load_prompt(project="StreamlitRAG", 
                             slug="rag-prompt", 
                             defaults={"tools": [tool_definition], "tool_choice": "auto", "stream": False},
-                            version= CHAMPION_PROMPT # if random.random() > 1.0 else CHALLENGER_PROMPT
+                            version= CHALLENGER_PROMPT # if random.random() > 1.0 else CHALLENGER_PROMPT
                             )
 
     MODEL = prompt_object.build()["model"]
