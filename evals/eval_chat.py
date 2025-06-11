@@ -19,14 +19,14 @@ client = wrap_openai(
 PROJECT_NAME=os.getenv("BRAINTRUST_PROJECT_NAME")
 project = projects.create(name=PROJECT_NAME)
 
-def faithfulness(input, output, metadata):
-    return Faithfulness()(input=input, output=output, context=metadata["context"])
+def faithfulness(input, output):
+    return Faithfulness()(input=input, output=output["output"], context=output["context"])
 
 Eval(
     name=PROJECT_NAME,
     task=chat,
     data=init_dataset(project=PROJECT_NAME, name="QandAEvalCases"),
-    scores=[forgetfulness, faithfulness],
+    scores=[faithfulness],
     max_concurrency=5
 )
 

@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 from tools.retriever import get_documents, tool_definition
 import json
-from helpers.helpers import format_messages_for_api
+from helpers.helpers import format_messages_for_api, CHAMPION_PROMPT, CHALLENGER_PROMPT
 import random
 
 def validate_conversation(messages):
@@ -59,7 +59,7 @@ client = wrap_openai(
 prompt_object = load_prompt(project="StreamlitRAG", 
                             slug="rag-prompt", 
                             defaults={"tools": [tool_definition], "tool_choice": "auto", "stream": False},
-                            version= "8a2274f61f24b7ca" if random.random() < 0.2 else "4995a22ef90f9795"
+                            version= CHAMPION_PROMPT if random.random() < 1.0 else CHALLENGER_PROMPT
                             )
 
 MODEL = prompt_object.build()["model"]
