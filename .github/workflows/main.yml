@@ -38,7 +38,8 @@ jobs:
         with:
           api_key: ${{ secrets.BRAINTRUST_API_KEY }}
           runtime: python
-          root: evals
+          paths: evals
+
         env:
           VOYAGEAI_API_KEY: ${{ secrets.VOYAGEAI_API_KEY }}
           PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
