@@ -1,6 +1,6 @@
 from braintrust import projects
 from autoevals.llm import LLMClassifier
-from autoevals import ContextPrecision
+from autoevals import Faithfulness
 from helpers.helpers import get_project
 from pydantic import BaseModel
 
@@ -8,6 +8,7 @@ class EvalCaseExample(BaseModel):
     input: str
     output: str
     expected: str = None
+    metadata: dict = None
 
 project = get_project()
 
@@ -71,10 +72,19 @@ def forgetfulness_handler(input, output):
         output=output,
     )
 
+def faithfulness_online_handler(input, output, metadata):
+    return Faithfulness.eval(
+        input=input,
+        output=output,
+        context=metadata["context"]
+    )
+
 project.scorers.create(
-    name="forgetfulness",
-    slug="forgetfulness",
-    description="Evaluate the forgetfulness of a chatbot",
-    handler=forgetfulness_handler,
-    parameters=EvalCaseExample
+    name="faithfullness",
+    slug="faithfulness-online",
+    description="Evaluate the faithfulness of a chatbot",
+    handler=faithfulness_online_handler,
+    parameters=EvalCaseExample,
+    if_exists="replace"
 )
+
