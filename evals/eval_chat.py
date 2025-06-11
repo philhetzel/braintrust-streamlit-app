@@ -1,12 +1,9 @@
-from braintrust import load_prompt, Eval, projects, wrap_openai, init_dataset, init_function
+from braintrust import Eval, projects, wrap_openai, init_dataset
 from autoevals import Faithfulness
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
-from tools.retriever import tool_definition
 from helpers.helpers import chat
-from scorers.scores import forgetfulness
-import asyncio
 
 load_dotenv()
 
